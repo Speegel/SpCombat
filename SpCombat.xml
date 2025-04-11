@@ -1,0 +1,110 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+    <Frame name="SpCombatFrame" parent="UIParent" movable="true" enableMouse="true" hidden="true">
+        <Size><AbsDimension x="400" y="300"/></Size>
+        <Anchors><Anchor point="CENTER"/></Anchors>
+
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                  edgeFile="Interface\DialogFrame\UI-DialogBox-Border"
+                  tile="true">
+            <BackgroundInsets><AbsInset left="11" right="12" top="12" bottom="11"/></BackgroundInsets>
+            <TileSize><AbsValue val="32"/></TileSize>
+            <EdgeSize><AbsValue val="32"/></EdgeSize>
+        </Backdrop>
+
+        <Scripts>
+            <OnMouseDown>
+                if (arg1 == "LeftButton") then self:StartMoving() end
+            </OnMouseDown>
+            <OnMouseUp>
+                self:StopMovingOrSizing()
+            </OnMouseUp>
+        </Scripts>
+
+        <!-- Title -->
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString name="SpCombatTitle" inherits="GameFontHighlightLarge" text="SpCombat">
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-15"/>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+
+        <Frames>
+            <!-- Scroll Frame -->
+            <ScrollFrame name="SpCombatScrollFrame" inherits="UIPanelScrollFrameTemplate">
+                <Size><AbsDimension x="360" y="220"/></Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="20" y="-40"/>
+                </Anchors>
+                <ScrollChild>
+                    <Frame name="SpCombatContentFrame">
+                        <Size><AbsDimension x="340" y="800"/></Size>
+
+                        <Layers>
+                            <Layer level="ARTWORK">
+                                <FontString name="SpCombatText" inherits="GameFontNormal" text="Loading...">
+                                    <Anchors>
+                                        <Anchor point="TOPLEFT" x="0" y="0"/>
+                                    </Anchors>
+                                </FontString>
+                            </Layer>
+                        </Layers>
+                    </Frame>
+                </ScrollChild>
+            </ScrollFrame>
+
+            <!-- Close Button -->
+            <Button name="SpCombatCloseButton" inherits="UIPanelButtonTemplate" text="Close">
+                <Size><AbsDimension x="100" y="30"/></Size>
+                <Anchors><Anchor point="BOTTOMRIGHT" x="-20" y="10"/></Anchors>
+                <Scripts>
+                    <OnClick>SpCombatFrame:Hide();</OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+    <Frame name="SpCombatMinimapButton" parent="Minimap" hidden="false" frameStrata="LOW">
+    <Size><AbsDimension x="32" y="32"/></Size>
+    <Anchors>
+        <Anchor point="TOPLEFT" x="52" y="-52"/>
+    </Anchors>
+    
+    <!-- Minimap Button -->
+    <Textures>
+        <Texture name="$parentIcon" file="Interface\Icons\Ability_Warrior_BattleShout">
+            <Size><AbsDimension x="24" y="24"/></Size>
+            <Anchors>
+                <Anchor point="CENTER"/>
+            </Anchors>
+        </Texture>
+    </Textures>
+
+    <Scripts>
+        <OnLoad>
+            this:RegisterForDrag("LeftButton");
+        </OnLoad>
+        <OnMouseDown>
+            if arg1 == "LeftButton" then
+                if SpCombatFrame:IsShown() then
+                    SpCombatFrame:Hide();
+                else
+                    SpCombatFrame:Show();
+                    SpCombatText:SetText(profiles[currentClass]);
+                end
+            end
+        </OnMouseDown>
+        <OnDragStart>
+            this:StartMoving();
+        </OnDragStart>
+        <OnDragStop>
+            this:StopMovingOrSizing();
+        </OnDragStop>
+    </Scripts>
+</Frame>
+
+</Ui>
