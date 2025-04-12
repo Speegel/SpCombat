@@ -1,9 +1,7 @@
 ## Interface: 11200
 ## Title: SpCombat
-## Notes: Class-based combat profile viewer
-## Version: 1.0
-## Author: Spiegel
+## Notes: Spiegel Combat Helper
+## Author: You
 ## SavedVariables: SpCombatDB
-
 SpCombat.xml
 SpCombat.lua
